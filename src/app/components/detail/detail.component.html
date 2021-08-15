@@ -1,1 +1,42 @@
-<p>detail works!</p>
+<form [formGroup]="applicationForm">
+    <div class="mb-3">
+      <label for="appNumber">Application Number</label>
+      <input type="text" formControlName="appNumber" class="form-control" id="appNumber" placeholder="Enter application number">
+    </div>
+    <div class="mb-3">
+        <label for="appType">Application Type</label>
+        <select formControlName="appType" class="form-control" id="appType">
+          <option>Home loan</option>
+          <option>Personal loan</option>
+          <option>Business loan</option>
+        </select>
+    </div>
+    <div class="mb-3">
+        <label for="amount">Amount</label>
+        <input type="number" formControlName="amount" class="form-control" id="amount" placeholder="Enter amount">
+    </div>
+    <div class="form-check form-check-inline">
+        <input formControlName="status" class="form-check-input" type="radio" name="status" id="status-active" value="active">
+        <label class="form-check-label" for="status-active">Active</label>
+    </div>
+    <div class="form-check form-check-inline">
+        <input formControlName="status" class="form-check-input" type="radio" name="status" id="status-inactive" value="inactive">
+        <label class="form-check-label" for="status-inactive">Inactive</label>
+    </div>
+    <div class="mb-3">
+        <label for="name">Full Name</label>
+        <input type="text" formControlName="name" class="form-control" id="name" placeholder="Enter full name">
+    </div>  
+    <div class="mb-3">
+        <label for="gender">Gender</label>
+        <select formControlName="gender" class="form-control" id="gender">
+          <option>Male</option>
+          <option>Female</option>
+          <option>Not disclosed</option>
+        </select>
+    </div>
+    <button type="button" (click)="retrieve()" class="btn btn-primary">Add Applicant</button>
+    <button type="button" (click)="remove()" class="btn btn-danger mx-3">Remove Applicant</button>
+    <button type="button" class="btn btn-info">Cancel</button>
+    <button type="submit" (click)="handleSubmit()" class="btn btn-success mx-3">Save</button>
+  </form>
