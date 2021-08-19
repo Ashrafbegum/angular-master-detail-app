@@ -18,10 +18,11 @@ export class ApplicationService {
     }
     sessionStorage.setItem('Applications', JSON.stringify(applications))
    }
-   getApplication(){
-     console.log(sessionStorage.getItem('Applications'))
+
+   getApplications(){
+     return JSON.parse(sessionStorage.getItem('Applications') || '{}');
    }
-   removeApplication(){
-    sessionStorage.removeItem('Applications');
-   }
+  //  removeApplication(){
+  //   sessionStorage.removeItem('Applications');
+  //  }
 }

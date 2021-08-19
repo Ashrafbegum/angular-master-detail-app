@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { ApplicationService } from 'src/app/service/application.service';
 import { ApplicationModel } from './application.model';
 @Component({
@@ -19,21 +19,36 @@ export class DetailComponent implements OnInit {
       appType: [''],
       amount: [''],
       status: [''],
-      name: [''],
-      gender: ['']
+      applicants: this.formbuilder.array([this.addApplicantsGroup()])
     })
   }
 
-  handleSubmit(){
-    //console.log(this.applicationForm.value)
+  addApplicantsGroup(){
+    return this.formbuilder.group({
+      name: [''],
+      gender: ['']
+    });
+  }
+
+  get applicantsArray(){
+    return <FormArray> this.applicationForm.get('applicants');
+  }
+
+  addApplicant(){
+    this.applicantsArray.push(this.addApplicantsGroup())
+  }
+  removeApplicant(index: number) {
+      if(this.applicantsArray.length == 1)  {
+        console.log("Atleast one applicant is required")
+      } else {
+        this.applicantsArray.removeAt(index);
+      }
+  }
+
+  onSave(){
+    console.log(this.applicationForm.value)
     this.applicationObj = Object.assign(this.applicationObj, this.applicationForm.value)
     this.application.addApplication(this.applicationObj)
     this.applicationForm.reset();
   }
-  retrieve(){
-    this.application.getApplication()
-   }
-   remove(){
-    this.application.removeApplication()
-   }
 }
