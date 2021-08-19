@@ -5,6 +5,10 @@ import { DetailComponent } from './components/detail/detail.component';
 
 const routes: Routes = [
   {
+    path: '',
+    component: MasterComponent
+  },
+  {
     path: 'master',
     component: MasterComponent
   },

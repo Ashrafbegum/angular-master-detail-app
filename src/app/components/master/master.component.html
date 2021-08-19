@@ -17,13 +17,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
-      <td>1</td>
-      <td>Home Loan</td>
-      <td>$150</td>
-      <td>Active</td>
+    <tr *ngFor="let application of applications;">
+      <td>{{application.appNumber}}</td>
+      <td>{{application.appType}}</td>
+      <td>{{application.amount}}</td>
+      <td>{{application.status}}</td>
       <td>
-          <button class="btn btn-info" routerLink="/detail">Edit</button>
+          <button class="btn btn-info" (click)="onEdit(application)" routerLink="/detail">Edit</button>
       </td>
     </tr>
     </tbody>
