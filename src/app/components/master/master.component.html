@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <h1 style="color: aliceblue;">Master-Detail App</h1>
         <div class="d-flex">
-            <button class="btn btn-success" routerLink="/detail">New Application</button>
+            <button class="btn btn-success" routerLink="/edit/0">New Application</button>
         </div>
     </div>
 </nav>
@@ -17,14 +17,16 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let application of applications;">
-      <td>{{application.appNumber}}</td>
-      <td>{{application.appType}}</td>
-      <td>{{application.amount}}</td>
-      <td>{{application.status}}</td>
+    <tr *ngFor="let app of applications;">
+      <td>{{app.appNumber}}</td>
+      <td>{{app.appType}}</td>
+      <td>{{app.amount}}</td>
+      <td>{{app.status}}</td>
       <td>
-          <button class="btn btn-info" (click)="onEdit(application)" routerLink="/detail">Edit</button>
-      </td>
+          <!-- <button type="button" class="btn btn-info" routerLink="/edit/{{app.appNumber}}">Edit</button> -->
+          <button type="button" class="btn btn-info" (click)="editApplication(app.appNumber)">Edit</button>
+
+        </td>
     </tr>
     </tbody>
   </table>

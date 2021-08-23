@@ -6,14 +6,15 @@ import { DetailComponent } from './components/detail/detail.component';
 const routes: Routes = [
   {
     path: '',
-    component: MasterComponent
+    redirectTo: '/master',
+    pathMatch: 'full'
   },
   {
     path: 'master',
     component: MasterComponent
   },
   {
-    path: 'detail',
+    path: 'edit/:id',
     component: DetailComponent
   }
 ];

@@ -10,7 +10,7 @@
 
   <!-- main form -->
   <div class="row">
-    <form action="" style="width:100%;" [formGroup]="applicationForm">
+    <form action="" style="width:100%;" [formGroup]="applicationForm" (ngSubmit)="onSave()">
       <div class="col">
 
         <!-- application info -->
@@ -98,6 +98,8 @@
                   <small *ngIf="group.controls.streetAddress.invalid && group.controls.streetAddress.touched" class="form-text custom-invalid-feedback">Field is required</small> -->
                 </div>
               </div>
+              <div>
+              </div>
               <div class="col-12">
                 <div class="form-group">
                   <label for="gender">Gender</label>
@@ -120,9 +122,10 @@
 
         <!-- final action buttons -->
         <div class="row justify-content-center">
-            <div class="col-4 control-buttons">
+          <div class="col-4 control-buttons">
             <button type="button" (click)="addApplicant()" class="btn btn-primary"><img src="/assets/icons/add.svg" alt="Add applicant icon" /> Add Applicant</button>
-            <button type="submit" routerLink="/master" (click)="onSave()" class="btn btn-primary mx-3">Save</button>
+            <!-- <button type="submit" routerLink="/master" (click)="onSave()" class="btn btn-primary mx-3">Save</button> -->
+            <button type="submit" class="btn btn-primary mx-3">Save</button>
           </div>
         </div>
       </div>
