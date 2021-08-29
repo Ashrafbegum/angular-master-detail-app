@@ -5,5 +5,5 @@ export class ApplicationModel {
      appType: string='';
      amount: string ='';
      status: string ='';
-     applicant: Array<ApplicantModel>=[];
+     applicants: Array<ApplicantModel>=[];
 }

@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ApplicationService } from 'src/app/service/application.service';
-import { ApplicationModel } from '../detail/application.model';
-import { DetailComponent } from '../detail/detail.component';
-
+import { ApplicationModel } from '../../models/application.model';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-master',
   templateUrl: './master.component.html',
@@ -10,22 +9,15 @@ import { DetailComponent } from '../detail/detail.component';
 })
 export class MasterComponent implements OnInit {
   applications !: Array<ApplicationModel>;
-    constructor(private application: ApplicationService ) {
+  // @Input() applicationObj: ApplicationModel;
+    constructor(private appService: ApplicationService, private router: Router) {
    }
 
   ngOnInit(): void {
-    this.getAllApplications();
+    this.applications= this.appService.getApplications();
   }
 
-  getAllApplications(){
-    this.applications= this.application.getApplications();
+  editApplication(appNumber: number){
+    this.router.navigate(['/edit', appNumber])
   }
-
-  onEdit(application: ApplicationModel){
-    console.log("in onEdit")
-  }
-
-  // removeAllApplications(){
-  //   this.application.removeApplication()
-  //  }
 }
