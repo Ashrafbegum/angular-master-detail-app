@@ -1,0 +1,27 @@
+<div class="btn-group btn-group-lg"> 
+    <label for="appIDType">Application ID Type</label>
+
+    <button type="button"
+    class="btn btn-secondary"
+    [class.active]="isActive('Australian Passport')"
+    [disabled]="disabled"
+    (click)="setLevel('Australian Passport')">Australian Passport</button> 
+    
+    <button type="button"
+    class="btn btn-secondary"
+    [class.active]="isActive('Driver Licence')"
+    [disabled]="disabled"
+    (click)="setLevel('Driver Licence')">Driver Licence</button>
+    
+    <button type="button"
+    class="btn btn-secondary"
+    [class.active]="isActive('Foreign Passport')"
+    [disabled]="disabled"
+    (click)="setLevel('Foreign Passport')">Foreign Passport</button> 
+
+    <button type="button"
+    class="btn btn-secondary"
+    [class.active]="isActive('Foreign ID Card')"
+    [disabled]="disabled"
+    (click)="setLevel('Foreign ID Card')">Foreign ID Card</button> 
+    </div>

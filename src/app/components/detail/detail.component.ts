@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray, FormControl, Validators} from '@angular/forms';
 import { ApplicationService } from 'src/app/service/application.service';
 import { ApplicationModel } from '../../models/application.model';
 import { ActivatedRoute } from '@angular/router';
@@ -17,38 +17,128 @@ export class DetailComponent implements OnInit {
   applicationForm !: FormGroup;
    applicationObj : ApplicationModel = new ApplicationModel();
   //  applicationObj !: ApplicationModel;
+  // appIDTypeSeleted: Array<String>=[];
+  //public buttonGroup: FormControl; 
+  appIDTypeValue: Array<String>=[];
 
-  constructor(private formbuilder: FormBuilder, private appService: ApplicationService, private router: Router, private route: ActivatedRoute ) { }
+  formErrors: any = {
+    'appNumber': '',
+    'appType': '',
+    'amount': '',
+    'status': '',
+    'name': '',
+    'appIDType': '',
+    'gender': ''
+  };
+  
+  validationMessages: any = {
+    'appNumber': {
+      'required': 'Application number is required.',
+      'pattern': 'Application number must be a number.'
+    },
+    'appType': {
+      'required': 'Application type is required.',
+    },
+    'amount': {
+      'required': 'Amount is required.',
+      'pattern': 'Amount must be a number.'
+    },
+    'status': {
+      'required': 'Status is required.',
+    },
+    'name': {
+      'required': 'Name is required.',
+      'pattern': 'Name must have characters only.',
+    },
+    'appIDType': {
+      'required': 'Application ID Type is required.',
+    },
+    'gender': {
+      'required': 'Gender is required.',
+    },
+  };
+  
+  
+  constructor(private formbuilder: FormBuilder, private appService: ApplicationService, private router: Router, private route: ActivatedRoute ) { 
+   // this.buttonGroup = new FormControl(''); 
+
+  }
 
   ngOnInit(): void {
+    // this.buttonGroup.valueChanges.subscribe(value => {
+    //   this.appIDTypeValue.push(value)
+    //   console.log(value)
+    // }); 
+
+    // this.applicationForm = this.formbuilder.group ({
+    //   appNumber: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+    //   appType: ['', Validators.required],
+    //   amount: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+    //   status: ['', Validators.required],
+    //   applicants: this.formbuilder.array([this.addApplicantsGroup()]),
+    // })
+
     this.applicationForm = this.formbuilder.group ({
       appNumber: [''],
       appType: [''],
       amount: [''],
       status: [''],
-      applicants: this.formbuilder.array([this.addApplicantsGroup()])
+      applicants: this.formbuilder.array([this.addApplicantsGroup()]),
     })
 
     this.route.paramMap.subscribe(params => {
       const appNumber = Number(params.get('id'));
-      console.log("in detail getting params")
-      console.log(Number(params.get('id')));
-      console.log(params.get('id'));
-      console.log(appNumber);
-
         if(appNumber != 0) {
           this.getApplication(appNumber);  
         }
     })
+
+     // When any of the form control value in employee form changes
+  // our validation function logValidationErrors() is called
+  this.applicationForm.valueChanges.subscribe((data) => {
+    this.logValidationErrors(this.applicationForm);
+  });
   }
 
+  logValidationErrors(group: FormGroup = this.applicationForm): void {
+    Object.keys(group.controls).forEach((key: string) => {
+      const abstractControl = group.get(key);
+      if (abstractControl instanceof FormGroup) {
+        console.log("Abstract control:")
+        console.log(abstractControl)
+        this.logValidationErrors(abstractControl);
+      } else {
+        this.formErrors[key] = '';
+        if (abstractControl && !abstractControl.valid
+            && (abstractControl.touched || abstractControl.dirty)) {
+          const messages = this.validationMessages[key];
+          for (const errorKey in abstractControl.errors) {
+            if (errorKey) {
+              this.formErrors[key] += messages[errorKey] + ' ';
+            }
+          }
+        }
+      }
+    });
+  }
+  
+  // addApplicantsGroup(){
+  //   return this.formbuilder.group({
+  //     name: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]+')]],
+  //     appIDType: [''],
+  //     gender: ['', Validators.required],
+  //   });
+  // }
+  
   addApplicantsGroup(){
     return this.formbuilder.group({
       name: [''],
+      appIDType: [''],
       gender: ['']
     });
   }
 
+  
   get applicantsArray(){
     return <FormArray> this.applicationForm.get('applicants');
   }
@@ -66,20 +156,8 @@ export class DetailComponent implements OnInit {
    }
 
     getApplication(appNumber: Number) {
-      console.log("appnumber in getApplication")
-      console.log(appNumber);
-      // if(appNumber) {
-      //     this.applicationObj = {
-      //       appNumber: 0,
-      //       appType: '',
-      //       amount: '',
-      //       status: '',
-      //       this.applicationForm.setControl('applicants', this.setEmptyApplicantsGroup(applicants))
-      //     }
-      // } else {
         this.applicationObj = this.appService.getApplication(appNumber);
         this.editApplication(this.applicationObj);
-     // }
     }
     
     editApplication(app: ApplicationModel) {
@@ -97,12 +175,18 @@ export class DetailComponent implements OnInit {
       applicants.forEach(app => {
         formArray.push(this.formbuilder.group({
           name: app.name,
-          gender: app.gender
+          appIDType: app.appIDType,
+          gender: app.gender,
         }))
       })
       return formArray;
     }
   
+    childEvent(eventData: Array<String>){
+      console.log("Child event passed");
+      console.log(eventData);
+    }
+
    onSave(){
     console.log(this.applicationForm.value)
     this.applicationObj = Object.assign(this.applicationObj, this.applicationForm.value)
