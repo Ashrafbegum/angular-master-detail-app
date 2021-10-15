@@ -1,32 +1,12 @@
- <div [formGroup] ="form">
+<div>
   <label for="appIDType">Application ID Type</label>
-  <!-- <mat-button-toggle-group
-     aria-label="Font Style" [ngModel]="appIDType"
-      (ngModelChange)="onToggleButtonChange($event)" multiple
-      name="appIDType" [ngModelOptions]="{standalone: true}" > -->
-      <mat-button-toggle-group
-      aria-label="Font Style" 
-        multiple
-       name="appIDType"  >
 
-    <mat-button-toggle value="Australian Passport">Australian Passport</mat-button-toggle>
-    <mat-button-toggle value="Driver Licence">Driver Licence</mat-button-toggle>
-    <mat-button-toggle value="Foreign Passport">Foreign Passport</mat-button-toggle>
-    <mat-button-toggle value="Foreign ID Card">Foreign ID Card</mat-button-toggle>
+  <mat-button-toggle-group  #group="matButtonToggleGroup" 
+      (change)="onToggleGroupChange($event)"
+      [disabled]=disabled
+      [value]="selectedButtons"
+      multiple=true>
+    <mat-button-toggle  *ngFor="let item of toggleOptions;" (change)="onToggleGroupChange($event)" [value]="item">{{item}}</mat-button-toggle>
   </mat-button-toggle-group>
+  <div class="example-selected-value">Selected value: {{group.value}}</div>
 </div>
-
- <!-- <div class="btn-group btn-group-lg"> 
-
-  <button type="button"
-  class="btn btn-secondary"
-  >low</button> 
-  
-  <button type="button"
-  class="btn btn-secondary">medium</button>
-  
-  <button type="button"
-  class="btn btn-secondary"
-  
-   >high</button> 
-  </div> -->

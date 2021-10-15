@@ -21,6 +21,8 @@ export class ApplicationService {
 
   constructor() {
    }
+
+   //Add application to session storage
   addApplication(applicationObj: ApplicationModel){
     if(sessionStorage.getItem('Saved-Applications')) {
       this.applications = JSON.parse(sessionStorage.getItem('Saved-Applications') || '{}');
@@ -40,10 +42,12 @@ export class ApplicationService {
     sessionStorage.setItem('Saved-Applications', JSON.stringify(this.applications))
   }
 
+  //Get all existing applications from the session storage
    getApplications(){
      return JSON.parse(sessionStorage.getItem('Saved-Applications') || '{}');
    }
 
+// Get an application for the given id from the session storage
    getApplication(id: Number): any {
     if(sessionStorage.getItem('Saved-Applications')) {
       this.applications = JSON.parse(sessionStorage.getItem('Saved-Applications') || '{}');  
