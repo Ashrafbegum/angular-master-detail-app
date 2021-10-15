@@ -8,15 +8,12 @@ import { ApplicationService } from './service/application.service';
 import { ToggleButtonComponent } from './components/toggle-button/toggle-button.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonToggleModule} from '@angular/material/button-toggle';
-import { CustomControlComponent } from './components/custom-control/custom-control.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     routingComponents,
     ToggleButtonComponent,
-     CustomControlComponent,
-    
   ],
   imports: [
     BrowserModule,

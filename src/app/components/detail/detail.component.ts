@@ -6,15 +6,15 @@ import { ActivatedRoute } from '@angular/router';
 import { ApplicantModel } from 'src/app/models/applicant.model';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-detail',
   templateUrl: './detail.component.html',
   styleUrls: ['./detail.component.css']
 })
 export class DetailComponent implements OnInit {
-
-  applicationForm !: FormGroup;
+  values = [1,2,3,4,5,6,7]
+  
+   applicationForm !: FormGroup;
    applicationObj : ApplicationModel = new ApplicationModel();
   //  applicationObj !: ApplicationModel;
   // appIDTypeSeleted: Array<String>=[];
@@ -60,29 +60,17 @@ export class DetailComponent implements OnInit {
   
   
   constructor(private formbuilder: FormBuilder, private appService: ApplicationService, private router: Router, private route: ActivatedRoute ) { 
-   // this.buttonGroup = new FormControl(''); 
 
   }
 
   ngOnInit(): void {
-    // this.buttonGroup.valueChanges.subscribe(value => {
-    //   this.appIDTypeValue.push(value)
-    //   console.log(value)
-    // }); 
-
-    // this.applicationForm = this.formbuilder.group ({
-    //   appNumber: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-    //   appType: ['', Validators.required],
-    //   amount: ['', [Validators.required, Validators.pattern('[0-9]+')]],
-    //   status: ['', Validators.required],
-    //   applicants: this.formbuilder.array([this.addApplicantsGroup()]),
-    // })
-
+   
+    //Set validations
     this.applicationForm = this.formbuilder.group ({
-      appNumber: [''],
-      appType: [''],
-      amount: [''],
-      status: [''],
+      appNumber: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      appType: ['', Validators.required],
+      amount: ['', [Validators.required, Validators.pattern('[0-9]+')]],
+      status: ['', Validators.required],
       applicants: this.formbuilder.array([this.addApplicantsGroup()]),
     })
 
@@ -122,22 +110,14 @@ export class DetailComponent implements OnInit {
     });
   }
   
-  // addApplicantsGroup(){
-  //   return this.formbuilder.group({
-  //     name: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]+')]],
-  //     appIDType: [''],
-  //     gender: ['', Validators.required],
-  //   });
-  // }
-  
+  //Add validations
   addApplicantsGroup(){
     return this.formbuilder.group({
-      name: [''],
-      appIDType: [''],
-      gender: ['']
+      name: ['', [Validators.required, Validators.pattern('[A-Za-z0-9]+')]],
+      appIDType: [[], Validators.required],
+      gender: ['', Validators.required],
     });
   }
-
   
   get applicantsArray(){
     return <FormArray> this.applicationForm.get('applicants');
@@ -149,17 +129,18 @@ export class DetailComponent implements OnInit {
 
   removeApplicant(index: number) {
       if(this.applicantsArray.length == 1)  {
-        console.log("Atleast one applicant is required")
+        console.log("At least one applicant is required")
       } else {
         this.applicantsArray.removeAt(index);
       }
-   }
+   }	
 
     getApplication(appNumber: Number) {
         this.applicationObj = this.appService.getApplication(appNumber);
         this.editApplication(this.applicationObj);
     }
     
+    //Edit application
     editApplication(app: ApplicationModel) {
       this.applicationForm.patchValue({
           appNumber: app.appNumber,
@@ -170,6 +151,7 @@ export class DetailComponent implements OnInit {
         this.applicationForm.setControl('applicants', this.setApplicantsGroup(app.applicants))
     }
 
+    // Set Applicantsa on edit
     setApplicantsGroup(applicants: ApplicantModel[]): FormArray{
       const formArray = new FormArray([]);
       applicants.forEach(app => {
@@ -181,12 +163,8 @@ export class DetailComponent implements OnInit {
       })
       return formArray;
     }
-  
-    childEvent(eventData: Array<String>){
-      console.log("Child event passed");
-      console.log(eventData);
-    }
 
+    //Save the application
    onSave(){
     console.log(this.applicationForm.value)
     this.applicationObj = Object.assign(this.applicationObj, this.applicationForm.value)
@@ -196,96 +174,3 @@ export class DetailComponent implements OnInit {
 
   }
 }
-
-
-
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
-// import { ApplicationService } from 'src/app/service/application.service';
-// import { ApplicationModel } from '../../models/application.model';
-// import { ActivatedRoute } from '@angular/router';
-// @Component({
-//   selector: 'app-detail',
-//   templateUrl: './detail.component.html',
-//   styleUrls: ['./detail.component.css']
-// })
-// export class DetailComponent implements OnInit {
-
-//   applicationForm !: FormGroup;
-//   applicationObj: ApplicationModel = new ApplicationModel();
-//   constructor(private formbuilder: FormBuilder, private appService: ApplicationService, private route: ActivatedRoute ) { }
-
-//   ngOnInit(): void {
-//     this.applicationForm = this.formbuilder.group ({
-//       appNumber: [''],
-//       appType: [''],
-//       amount: [''],
-//       status: [''],
-//       applicant: this.formbuilder.group({
-//         name: [''],
-//         gender: [''],
-//       }),   
-//       applicantsArray: this.formbuilder.array([])
-//     })
-//       // applicants: this.formbuilder.array([this.addApplicantsGroup()])
-//   }
-    
-//     this.route.paramMap.subscribe(params => {
-//       const appNumber = params.get('id');
-//       if(appNumber) {
-//         this.getApplication(appNumber);
-//       }
-//     })
-//   }
-
-//   getApplication(appNumber: any) {
-//     this.applicationObj = this.appService.getApplication(appNumber);
-//     this.editApplication(this.applicationObj);
-//   }
-
-//   editApplication(app: any) {
-//     this.applicationForm.patchValue({
-//       appNumber: app.appNumber,
-//       appType: app.appType,
-//       amount: app.amount,
-//       status: app.statu,
-//       name: app.name,
-//       gender: app.gender
-//     })
-//   }
-
-//   // addApplicantsGroup(){
-//   //   return this.formbuilder.group({
-//   //     name: [''],
-//   //     gender: ['']
-//   //   });
-//   // }
-
-//   get applicantsArray(){
-//     return <FormArray> this.applicationForm.get('applicantsArray');
-//   }
-
-//   addApplicant(){
-//     // this.applicantsArray.push(this.addApplicantsGroup())
-//     this.applicantsArray.push(
-//       this.formbuilder.group({
-//         name: [''],
-//         gender: ['']
-//       })
-//     )
-//   }
-//   removeApplicant(index: number) {
-//       if(this.applicantsArray.length == 1)  {
-//         console.log("Atleast one applicant is required")
-//       } else {
-//         this.applicantsArray.removeAt(index);
-//       }
-//   }
-
-//   onSave(): void{
-//     console.log(this.applicationForm.value)
-//     this.applicationObj = Object.assign(this.applicationObj, this.applicationForm.value)
-//     this.appService.addApplication(this.applicationObj)
-//     this.applicationForm.reset();
-//   }
-// }
